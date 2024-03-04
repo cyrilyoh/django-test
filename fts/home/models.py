@@ -1,8 +1,8 @@
 from django.db import models
 
 class Colour(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Colour name')
-    paint_code = models.CharField(max_length=50, verbose_name='Paint code')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Colour name')
+    paint_code = models.CharField(max_length=50, unique=True, verbose_name='Paint code')
     
     def __str__(self):
         return self.name

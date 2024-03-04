@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Colours</h1>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Paint code</th>
+        </tr>
+        {% for d in data %}
+        <tr>
+            <td>{{ d.name }}</td>
+            <td>{{ d.paint_code }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a class="btn btn-primary" href="{% url 'addcolour' %}">Add Colour</a>
+</div>    
+{% endblock content %}
