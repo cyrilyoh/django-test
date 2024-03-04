@@ -8,4 +8,8 @@ urlpatterns = [
     path('addcolour/', v.create_colour, name='addcolour'),
     path('colours/', v.view_colours, name='viewcolours'),
     path('addcar/', v.create_car, name='addcar'),
+    path('editcar/<int:id>/', v.edit_car, name='editcar'),
+    path('delcar/<int:id>/', v.destroycar, name='delcar'),
+    path('cardetails/<int:id>/', v.car_details, name='cardetails'),
+    path('addowner/<int:id>/', v.add_owner, name='addowner'),
 ]

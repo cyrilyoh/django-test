@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Add Owner</h1>
+    <p>{{ car.model }} - {{ car.brand }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <table class="table">
+            {{ form.as_table }}
+            <tr>
+                <td colspan="2" align="right"><input type="submit" class="btn btn-primary" value="submit"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock content %}

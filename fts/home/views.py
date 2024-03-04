@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import BrandForm, ColourForm, CarForm
-from .models import Brand, Colour, Car
+from .forms import BrandForm, ColourForm, CarForm, OwnerRecordForm
+from .models import Brand, Colour, Car, OwnerRecord
 
 def home(request):
     return render(request, 'home.html')
@@ -62,5 +62,51 @@ def create_car(request):
             return redirect(create_car)
 
 def home(request):
+    """View all cars"""
+
     cars = Car.objects.all()
     return render(request, 'home.html', {'data': cars})
+
+def edit_car(request, id):
+    """Update a car"""
+
+    carobj = get_object_or_404(Car, id=id)
+    if request.method == 'GET':
+        car_form = CarForm(instance=carobj)
+        return render(request, "editcar.html", {'form': car_form, 'data': carobj})
+    else:
+        car_form = CarForm(request.POST, instance=carobj)
+        if car_form.is_valid():
+            car_form.save()
+            messages.success(request, 'Car updated successfully!')
+            return redirect(home)
+
+def destroycar(request,id):
+    """Delete a car """
+
+    carobj = Car.objects.get(id=id)
+    carobj.delete()
+    return redirect(home)
+
+def car_details(request, id):
+    """Get car details"""
+
+    car = get_object_or_404(Car, pk=id)
+    own_rec = OwnerRecord.objects.filter(car=car)
+    return render(request, 'car_details.html', {'car': car, 'own_rec': own_rec})
+
+def add_owner(request, id):
+    """Add owner record"""
+
+    carobj = Car.objects.get(pk=id)
+    if request.method == 'GET':
+        carform = OwnerRecordForm()
+        return render(request, 'addowner.html', {'form': carform, 'car': carobj})
+    else:
+        carform = OwnerRecordForm(request.POST)
+        if carform.is_valid():
+            owner_record = carform.save(commit=False)
+            owner_record.car = carobj
+            owner_record.save()
+            return redirect(home)
+    

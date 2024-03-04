@@ -21,7 +21,7 @@
             <td>{{ d.brand }}</td>
             <td>{{ d.Condition }}</td>
             <td>{{ d.no_previous_owners }}</td>
-            <td><a class="nav-link" href="">Details</a></td>
+            <td><a class="nav-link" href="{% url 'cardetails' id=d.id %}">Details</a></td>
         </tr>
         {% endfor %}
     </table>
