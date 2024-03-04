@@ -105,6 +105,13 @@ def add_owner(request, id):
     else:
         carform = OwnerRecordForm(request.POST)
         if carform.is_valid():
+            owned_from = carform.cleaned_data.get('owned_from')
+            owned_to = carform.cleaned_data.get('owned_to')
+            
+            overlapping_owners = OwnerRecord.objects.filter(car=carobj, owned_from__lte=owned_to, owned_to__gte=owned_from)
+            if overlapping_owners.exists():
+                messages.error(request, "This car is already owned by someone else during this period.")
+                return render(request, 'addowner.html', {'form': carform, 'car': carobj})
             owner_record = carform.save(commit=False)
             owner_record.car = carobj
             owner_record.save()

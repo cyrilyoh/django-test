@@ -2,6 +2,16 @@
 
 {% block content %}
 <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
     <h1>Add Owner</h1>
     <p>{{ car.model }} - {{ car.brand }}</p>
     <form method="POST">

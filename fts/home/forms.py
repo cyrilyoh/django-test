@@ -24,3 +24,4 @@ class OwnerRecordForm(forms.ModelForm):
             'owned_from': forms.DateInput(attrs={'type': 'date'}),
             'owned_to': forms.DateInput(attrs={'type': 'date'})
         }
+
