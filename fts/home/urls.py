@@ -12,4 +12,5 @@ urlpatterns = [
     path('delcar/<int:id>/', v.destroycar, name='delcar'),
     path('cardetails/<int:id>/', v.car_details, name='cardetails'),
     path('addowner/<int:id>/', v.add_owner, name='addowner'),
+    path('delown/<int:id>/', v.destroyowner, name='delown'),
 ]

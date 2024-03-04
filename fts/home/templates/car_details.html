@@ -44,7 +44,9 @@
             <td>{{ owner.owner }}</td>
             <td>{{ owner.owned_from }}</td>
             <td>{{ owner.owned_to }}</td>
-            <td></td>
+            <td><a class="btn btn-danger" onclick="return confirm('Do you want to delete this record?')" href="{% url 'delown' id=owner.id %}">
+                Delete
+            </a></td>
         </tr>
         {% empty %}
         <tr>
