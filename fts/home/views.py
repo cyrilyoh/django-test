@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib import messages
 from .forms import BrandForm, ColourForm, CarForm, OwnerRecordForm
 from .models import Brand, Colour, Car, OwnerRecord
@@ -79,7 +79,7 @@ def edit_car(request, id):
         if car_form.is_valid():
             car_form.save()
             messages.success(request, 'Car updated successfully!')
-            return redirect(home)
+            return redirect(reverse('cardetails', kwargs={'id': id}))
 
 def destroycar(request,id):
     """Delete a car """
@@ -122,12 +122,14 @@ def add_owner(request, id):
             # Increment the no_previous_owners field of the car
             carobj.no_previous_owners += 1
             carobj.save()
-            return redirect(home)
+            messages.success(request, 'Ownership record added successfully!')
+            return redirect(reverse('cardetails', kwargs={'id': carobj.id}))
     
 def destroyowner(request,id):
     """Delete an ownership """
 
     ownobj = OwnerRecord.objects.get(id=id)
+    carid = ownobj.car.id
     ownobj.delete()
     messages.warning(request, 'Ownership record deleted successfully!')
-    return redirect(home)
+    return redirect(reverse('cardetails', kwargs={'id': carid}))
