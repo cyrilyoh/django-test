@@ -14,3 +14,5 @@
 4. **Run the app**
     ```bash
    python manage.py runserver
+
+Bootstrap 4 is utilized as CDN. Therefore, for an improved user interface, ensure the internet connectivity when running the project.
