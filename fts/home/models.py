@@ -8,7 +8,7 @@ class Colour(models.Model):
         return self.name
 
 class Brand(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Brand name')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Brand name')
     
     def __str__(self):
         return self.name
