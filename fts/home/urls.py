@@ -7,4 +7,5 @@ urlpatterns = [
     path('brands/', v.view_brands, name='viewbrands'),
     path('addcolour/', v.create_colour, name='addcolour'),
     path('colours/', v.view_colours, name='viewcolours'),
+    path('addcar/', v.create_car, name='addcar'),
 ]

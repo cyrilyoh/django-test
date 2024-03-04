@@ -1,5 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Hello World</h1>
+<div class="container">
+    <h1>Cars</h1>
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Model</th>
+            <th>Colour</th>
+            <th>Brand</th>
+            <th>Condition</th>
+            <th>No. of previous owners</th>
+            <th></th>
+        </tr>
+        {% for d in data %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ d.model }}</td>
+            <td>{{ d.colour }}</td>
+            <td>{{ d.brand }}</td>
+            <td>{{ d.Condition }}</td>
+            <td>{{ d.no_previous_owners }}</td>
+            <td><a class="nav-link" href="">Details</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a class="btn btn-primary" href="{% url 'addcar' %}">Add Car</a>
+</div>    
 {% endblock content %}

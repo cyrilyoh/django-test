@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import BrandForm, ColourForm
-from .models import Brand, Colour
+from .forms import BrandForm, ColourForm, CarForm
+from .models import Brand, Colour, Car
 
 def home(request):
     return render(request, 'home.html')
@@ -47,3 +47,20 @@ def view_colours(request):
 
     colours = Colour.objects.all()
     return render(request, "viewcolours.html", {'data':colours})
+
+def create_car(request):
+    """ Create new Car"""
+    
+    if request.method == 'GET':
+        car_form = CarForm()
+        return render(request, 'addcar.html', {'data': car_form})
+    else:
+        car_form = CarForm(request.POST)
+        if car_form.is_valid():
+            car_form.save()
+            messages.success(request, 'Car added successfully!')
+            return redirect(create_car)
+
+def home(request):
+    cars = Car.objects.all()
+    return render(request, 'home.html', {'data': cars})
