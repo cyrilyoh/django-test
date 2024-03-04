@@ -25,7 +25,15 @@ def view_brands(request):
     """ List all brands """
 
     brands = Brand.objects.all()
-    return render(request, "viewbrands.html", {'data':brands})
+    brand_data = []
+
+    for brand in brands:
+        newcars = Car.objects.filter(brand=brand, condition='New').count()
+        usedcars = Car.objects.filter(brand=brand, condition='Used').count()
+        total_cars = newcars + usedcars
+        brand_data.append({'name': brand, 'newcars': newcars, 'usedcars': usedcars, 'total_cars': total_cars})
+
+    return render(request, 'viewbrands.html', {'data': brand_data})
 
 def create_colour(request):
     """ Create new colour """
