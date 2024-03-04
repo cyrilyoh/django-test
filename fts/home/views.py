@@ -109,6 +109,9 @@ def add_owner(request, id):
             owned_to = carform.cleaned_data.get('owned_to')
 
             overlapping_owners = OwnerRecord.objects.filter(car=carobj, owned_from__lte=owned_to, owned_to__gte=owned_from)
+            if owned_from and owned_to and owned_from >= owned_to:
+                messages.warning(request, "Owned from date must be less than owned to date.")
+                return render(request, 'addowner.html', {'form': carform, 'car': carobj})
             if overlapping_owners.exists():
                 messages.warning(request, "This car is already owned by someone else during this period.")
                 return render(request, 'addowner.html', {'form': carform, 'car': carobj})
