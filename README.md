@@ -88,4 +88,4 @@ The Car Management Application provides a comprehensive solution for managing ca
 
 ## Application Screenshot
 
-![Cars](https://github.com/cyrilyoh/django-test/tree/main/fts/static/img/cars_ss.png)
+![Cars](https://github.com/cyrilyoh/django-test/fts/static/img/cars_ss.png)
