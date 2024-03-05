@@ -14,8 +14,28 @@
     {% endif %}
     <h1>Cars</h1>
     <div class="jumbotron">
+        <!-- car_list.html -->
     <form method="get">
-        {{ filter.form }}
+        <table class="table table-borderless">
+            <tr>
+                <td><label>Model:</label></td>
+                <td>{{ filter.form.model }}</td>
+                <td><label>Brand:</label></td>
+                <td>{{ filter.form.brand }}</td>
+            </tr>
+            <tr>
+                <td><label>Colour:</label></td>
+                <td>{{ filter.form.colour }}</td>
+                <td><label>Condition:</label></td>
+                <td>{{ filter.form.condition }}</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <label for="id_search">Search</label>
+                    <input type="text" name="search" id="id_search" class="form-control" value="{{ request.GET.search }}">
+                </td>
+            </tr>
+        </table>
         <button type="submit" class="btn btn-primary">Filter</button>
         <a href="{% url 'homepage' %}" class="btn btn-secondary">Clear Filter</a>
     </form>
