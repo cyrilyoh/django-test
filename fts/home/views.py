@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib import messages
-from .forms import BrandForm, ColourForm, CarForm, OwnerRecordForm
-from .models import Brand, Colour, Car, OwnerRecord
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 
-def home(request):
-    return render(request, 'home.html')
+from .filters import CarFilter
+from .forms import BrandForm, CarForm, ColourForm, OwnerRecordForm
+from .models import Brand, Car, Colour, OwnerRecord
 
 def create_brand(request):
     """ Create new brand """
@@ -72,8 +72,14 @@ def create_car(request):
 def home(request):
     """View all cars"""
 
-    cars = Car.objects.all()
-    return render(request, 'home.html', {'data': cars})
+    car_list = Car.objects.all()
+    car_filter = CarFilter(request.GET, queryset=car_list)
+    paginator = Paginator(car_filter.qs, 10)
+
+    page_number = request.GET.get('page')
+    page_data = paginator.get_page(page_number)
+
+    return render(request, 'home.html', {'filter': car_filter, 'data': page_data})
 
 def edit_car(request, id):
     """Update a car"""

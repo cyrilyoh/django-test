@@ -13,6 +13,13 @@
     {% endfor %}
     {% endif %}
     <h1>Cars</h1>
+    <div class="jumbotron">
+    <form method="get">
+        {{ filter.form }}
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{% url 'homepage' %}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+    </div>
     <table class="table">
         <tr>
             <th>ID</th>
@@ -35,6 +42,25 @@
         </tr>
         {% endfor %}
     </table>
+    <!-- Pagination links -->
+    <div class="pagination" style="margin: 20px 0;">
+        <span class="step-links">
+            {% if data.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ data.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ data.number }} of {{ data.paginator.num_pages }}.
+            </span>
+
+            {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}">next</a>
+                <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
     <a class="btn btn-primary" href="{% url 'addcar' %}">Add Car</a>
+    <div class="clear">&nbsp;</div>
 </div>    
 {% endblock content %}
