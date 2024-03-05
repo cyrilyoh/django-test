@@ -1,5 +1,8 @@
 from django import forms
-from .models import Brand, Colour, Car, OwnerRecord
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+from .models import Brand, Car, Colour, OwnerRecord
 
 class BrandForm(forms.ModelForm):
     class Meta:
@@ -31,3 +34,15 @@ class OwnerRecordForm(forms.ModelForm):
             'owned_to': forms.DateInput(attrs={'type': 'date'})
         }
 
+class FtsUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+
+    def save(self, commit=True):
+        # Set is_active to False
+        user = super().save(commit=False)
+        user.is_active = False 
+        if commit:
+            user.save()
+        return user

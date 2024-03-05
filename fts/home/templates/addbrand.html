@@ -1,18 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
     <h1>Add Brand</h1>
-    {% if messages %}
-    {% for message in messages %}
-        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-    {% endif %}
     <form method="POST">
         {% csrf_token %}
         <table class="table">
@@ -22,5 +11,4 @@
             </tr>
         </table>
     </form>
-</div>
 {% endblock content %}

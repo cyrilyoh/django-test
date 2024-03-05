@@ -1,11 +1,15 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from .filters import CarFilter
-from .forms import BrandForm, CarForm, ColourForm, OwnerRecordForm
+from .forms import (BrandForm, CarForm, ColourForm, FtsUserCreationForm,
+                    OwnerRecordForm)
 from .models import Brand, Car, Colour, OwnerRecord
 
+@login_required(login_url='/login/')
 def create_brand(request):
     """ Create new brand """
 
@@ -35,6 +39,7 @@ def view_brands(request):
 
     return render(request, 'viewbrands.html', {'data': brand_data})
 
+@login_required(login_url='/login/')
 def create_colour(request):
     """ Create new colour """
 
@@ -56,6 +61,7 @@ def view_colours(request):
     colours = Colour.objects.all()
     return render(request, "viewcolours.html", {'data':colours})
 
+@login_required(login_url='/login/')
 def create_car(request):
     """ Create new Car"""
     
@@ -81,6 +87,7 @@ def home(request):
 
     return render(request, 'home.html', {'filter': car_filter, 'data': page_data})
 
+@login_required(login_url='/login/')
 def edit_car(request, id):
     """Update a car"""
 
@@ -95,6 +102,7 @@ def edit_car(request, id):
             messages.success(request, 'Car updated successfully!')
             return redirect(reverse('cardetails', kwargs={'id': id}))
 
+@login_required(login_url='/login/')
 def destroycar(request,id):
     """Delete a car """
 
@@ -110,6 +118,7 @@ def car_details(request, id):
     own_rec = OwnerRecord.objects.filter(car=car)
     return render(request, 'car_details.html', {'car': car, 'own_rec': own_rec})
 
+@login_required(login_url='/login/')
 def add_owner(request, id):
     """Add owner record"""
 
@@ -138,7 +147,8 @@ def add_owner(request, id):
             carobj.save()
             messages.success(request, 'Ownership record added successfully!')
             return redirect(reverse('cardetails', kwargs={'id': carobj.id}))
-    
+
+@login_required(login_url='/login/')
 def destroyowner(request,id):
     """Delete an ownership """
 
@@ -147,3 +157,50 @@ def destroyowner(request,id):
     ownobj.delete()
     messages.warning(request, 'Ownership record deleted successfully!')
     return redirect(reverse('cardetails', kwargs={'id': carid}))
+
+from django.contrib.auth.forms import UserCreationForm
+
+
+def registration(request):
+    """New user registration"""
+
+    if request.method=='GET':
+        form = FtsUserCreationForm()
+        return render(request, 'register.html', {'form': form})
+    else:
+        form = FtsUserCreationForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            checkmail = User.objects.filter(email=email).exists()
+            if checkmail:
+                messages.warning(request, 'Email Allready Exists !')
+                return render(request, "register.html", {'form':form})
+            form.save()
+            messages.success(request, "Registered successfully! Please wait for admin's approval")
+            return redirect('login')
+        return render(request, "register.html", {'form':form})
+
+def view_users(request):
+    """List all users for approval"""
+
+    data = User.objects.all().order_by('is_active')
+    return render(request, 'viewusers.html', {'users': data})
+
+@login_required(login_url='/login/')
+def approve_user(request, id):
+    """Approve a user"""
+
+    user = get_object_or_404(User, pk=id)
+    user.is_active = True
+    user.save()
+    messages.success(request, 'User activated successfully!')
+    return redirect(view_users)
+
+@login_required(login_url='/login/')
+def delete_user(request, id):
+    """Delete a user"""
+
+    user = get_object_or_404(User, pk=id)
+    user.delete()
+    messages.success(request, 'User deleted successfully!')
+    return redirect(view_users)
