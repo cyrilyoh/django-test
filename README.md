@@ -85,3 +85,7 @@ Brands can be viewed and managed through the application interface.
 ## Conclusion:
 
 The Car Management Application provides a comprehensive solution for managing car-related data efficiently. With features for brand, colour, car, and ownership record management, along with user registration and management functionalities, it offers a user-friendly interface for users to interact with car-related information effectively.
+
+## Application Screenshot
+
+![Cars](https://github.com/cyrilyoh/django-test/tree/main/fts/static/img/cars_ss.png)
