@@ -31,10 +31,13 @@ This Car Management System aims to streamline the process of managing cars and t
 4. **Apply Migrations**
     ```bash
    python manage.py runserver
-5. **Load dummy data**
+5. **Create super user**
+    ```bash
+   python manage.py createsuperuser
+6. **Load dummy data**
     ```bash
    python manage.py loaddata dummy_data.json
-6. **Run the app**
+7. **Run the app**
     ```bash
    python manage.py runserver
 

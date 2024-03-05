@@ -13,6 +13,8 @@ pip install -r requirements.txt
 cd fts
 # Apply migrations
 python manage.py migrate
+# Create super user
+python manage.py createsuperuser
 # Populate the DB with dummy data
 python manage.py loaddata dummy_data.json
 # Run server
