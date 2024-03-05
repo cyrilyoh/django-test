@@ -1,32 +1,62 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
-    <h1>Users</h1>
-    <table class="table">
-        <tr>
-            <th>Username</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Date joined</th>
-            <th>Status</th>
-        </tr>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.last_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.date_joined }}</td>
-            <td>
-                {% if user.is_active %}
-                <span class="badge badge-success">Active</span>
-                {% else %}
-                <a class="badge badge-warning" href="{% url 'approve_user' id=user.id %}">Approve</a>
-                <a class="badge badge-danger" href="{% url 'delete_user' id=user.id %}" onclick="return confirm('Do you want to delete the user?')">Deny</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<!-- Right side column. Contains the navbar and content of the page -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Users
+            <!-- <small>Control panel</small> -->
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Users</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">All Users</h3>                                   
+                        </div><!-- /.box-header -->
+                        <div class="box-body table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>First name</th>
+                                        <th>Last name</th>
+                                        <th>Email</th>
+                                        <th>Date joined</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.first_name }}</td>
+                                        <td>{{ user.last_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.date_joined }}</td>
+                                        <td>
+                                            {% if user.is_active %}
+                                            <span class="btn btn-primary btn-xs">Active</span>
+                                            {% else %}
+                                            <a class="btn btn-success btn-xs" href="{% url 'approve_user' id=user.id %}">Approve</a>
+                                            <a class="btn btn-danger btn-xs" href="{% url 'delete_user' id=user.id %}" onclick="return confirm('Do you want to delete the user?')">Deny</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+        </div><!-- /.row (main row) -->
+        <!-- Pagination links -->
+    </section><!-- /.content -->
 {% endblock content %}

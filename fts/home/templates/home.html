@@ -1,76 +1,107 @@
 {% extends 'base.html' %}
-
 {% block content %}
-    <h1>Cars</h1>
-    <div class="jumbotron">
-        <!-- car_list.html -->
-    <form method="get">
-        <table class="table table-borderless">
-            <tr>
-                <td><label>Model:</label></td>
-                <td>{{ filter.form.model }}</td>
-                <td><label>Brand:</label></td>
-                <td>{{ filter.form.brand }}</td>
-            </tr>
-            <tr>
-                <td><label>Colour:</label></td>
-                <td>{{ filter.form.colour }}</td>
-                <td><label>Condition:</label></td>
-                <td>{{ filter.form.condition }}</td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <label for="id_search">Search</label>
-                    <input type="text" name="search" id="id_search" class="form-control" value="{{ request.GET.search }}">
-                </td>
-            </tr>
-        </table>
-        <button type="submit" class="btn btn-primary">Filter</button>
-        <a href="{% url 'homepage' %}" class="btn btn-secondary">Clear Filter</a>
-    </form>
-    </div>
-    <table class="table">
-        <tr>
-            <th>ID</th>
-            <th>Model</th>
-            <th>Colour</th>
-            <th>Brand</th>
-            <th>Condition</th>
-            <th>No. of previous owners</th>
-            <th></th>
-        </tr>
-        {% for d in data %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ d.model }}</td>
-            <td>{{ d.colour }}</td>
-            <td>{{ d.brand }}</td>
-            <td>{{ d.condition }}</td>
-            <td>{{ d.no_previous_owners }}</td>
-            <td><a class="nav-link" href="{% url 'cardetails' id=d.id %}">Details</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <!-- Pagination links -->
-    <div class="pagination" style="margin: 20px 0;">
-        <span class="step-links">
-            {% if data.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ data.previous_page_number }}">previous</a>
-            {% endif %}
+<!-- Right side column. Contains the navbar and content of the page -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Cars
+            <!-- <small>Control panel</small> -->
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Cars</li>
+        </ol>
+    </section>
 
-            <span class="current">
-                Page {{ data.number }} of {{ data.paginator.num_pages }}.
-            </span>
-
-            {% if data.has_next %}
-                <a href="?page={{ data.next_page_number }}">next</a>
-                <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-    {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'addcar' %}">Add Car</a>
-    {% endif %}
-    <div class="clear">&nbsp;</div>
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="container" style="margin-bottom: 20px;">
+        <form method="get">
+            <div class="col-md-2">
+                <label>Model:</label><br/>
+                {{ filter.form.model }}
+            </div>
+            <div class="col-md-2">
+                <label>Brand:</label><br/>
+                {{ filter.form.brand }}
+            </div>
+            <div class="col-md-2">
+                <label>Colour:</label><br/>
+                {{ filter.form.colour }}
+            </div>
+            <div class="col-md-2">
+                <label>Condition:</label><br/>
+                {{ filter.form.condition }}
+            </div>
+            <div class="col-md-2">
+                <label for="id_search">Search</label><br/>
+                <input type="text" name="search" id="id_search"  value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-2">
+                <label></label><br/>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{% url 'homepage' %}" class="btn btn-secondary">Clear Filter</a>
+            </div>
+        </form>
+        </div>
+        <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">All Cars
+                            {% if user.is_authenticated %} | 
+                            <a class="btn btn-primary" href="{% url 'addcar' %}">Add New Car</a>
+                            {% endif %}</h3>                                   
+                        </div><!-- /.box-header -->
+                        <div class="box-body table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Model</th>
+                                        <th>Colour</th>
+                                        <th>Brand</th>
+                                        <th>Condition</th>
+                                        <th>No. of previous owners</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for d in data %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ d.model }}</td>
+                                        <td>{{ d.colour }}</td>
+                                        <td>{{ d.brand }}</td>
+                                        <td>{{ d.condition }}</td>
+                                        <td>{{ d.no_previous_owners }}</td>
+                                        <td><a class="btn btn-primary btn-xs" href="{% url 'cardetails' id=d.id %}">Details</a></td>
+                                    </tr>
+                                    {% endfor %}
+                            </table>
+                            <div class="pagination" style="margin: 20px 0;">
+                                <span class="step-links">
+                                    {% if data.has_previous %}
+                                        <a href="?page=1">&laquo; first</a>
+                                        <a href="?page={{ data.previous_page_number }}">previous</a>
+                                    {% endif %}
+                        
+                                    <span class="current">
+                                        Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                                    </span>
+                        
+                                    {% if data.has_next %}
+                                        <a href="?page={{ data.next_page_number }}">next</a>
+                                        <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+        </div><!-- /.row (main row) -->
+        <!-- Pagination links -->
+    </section><!-- /.content -->
 {% endblock content %}

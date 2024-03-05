@@ -108,7 +108,7 @@ def destroycar(request,id):
 
     carobj = Car.objects.get(id=id)
     carobj.delete()
-    messages.warning(request, 'Car deleted successfully!')
+    messages.success(request, 'Car deleted successfully!')
     return redirect(home)
 
 def car_details(request, id):
@@ -155,7 +155,7 @@ def destroyowner(request,id):
     ownobj = OwnerRecord.objects.get(id=id)
     carid = ownobj.car.id
     ownobj.delete()
-    messages.warning(request, 'Ownership record deleted successfully!')
+    messages.success(request, 'Ownership record deleted successfully!')
     return redirect(reverse('cardetails', kwargs={'id': carid}))
 
 from django.contrib.auth.forms import UserCreationForm
